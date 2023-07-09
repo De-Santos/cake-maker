@@ -2,3 +2,4 @@ click
 kubernetes
 docker
 python-json-logger
+pyyaml

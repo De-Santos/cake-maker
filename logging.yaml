@@ -1,0 +1,8 @@
+handlers:
+  - type: file
+    level: INFO
+    filename: app.log
+    format: json
+  - type: console
+    level: DEBUG
+    format: json

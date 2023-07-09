@@ -1,0 +1,10 @@
+logging:
+  log_file: "app.log"
+
+modules:
+  - module:
+      name: name
+      path: path
+      dockerfile_name: name
+      local_push_commands: path
+      cloud_push_commands: path

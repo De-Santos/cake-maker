@@ -1,0 +1,2 @@
+class LoggerSetupWarning(Warning):
+    pass
