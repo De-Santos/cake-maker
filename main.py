@@ -1,23 +1,10 @@
-import os
+from setup import docker
+from setup import kube
+from constant import flog
 
-import docker
-from kubernetes import client, config
-
-from setup import LoggerSetup
-
-# Configure Kubernetes
-config.load_kube_config()
-
-# Create Kubernetes API client
-kubernetes_api = client.CoreV1Api()
-
-# Create Docker client
-docker_client = docker.from_env()
-
-# Get the absolute path to a file in the current directory
-log_config_path = os.path.abspath("logging.yaml")
-
-logger = LoggerSetup(log_config_path).setup_file_logging()
 
 if __name__ == '__main__':
-    logger.error("first python log")
+    flog.log("start application")
+    print(docker.docker_client.version())
+    print(kube.kubernetes_api.list_node())
+    # print(kube.kubernetes_api.get_api_resources())

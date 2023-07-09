@@ -3,3 +3,4 @@ kubernetes
 docker
 python-json-logger
 pyyaml
+colorlog
