@@ -1,3 +1,14 @@
+#log:
+#  format:
+#    message: "%(log_color)s%(levelname)s %(pathname)s %(message)s"
+#    date: "%Y-%m-%d %H:%M:%S"
+#  color:
+#    debug: green
+#    info: blue
+#    warning: yellow
+#    error: red
+#    critical: bold_red
+
 handlers:
   - type: file
     level: INFO

@@ -1,6 +1,5 @@
-import warnings
-
 from setup.warnings import LoggerSetupWarning
+from utils.color_warnings import warnings
 from .exceptions import InvalidFilenameFileTypeException
 from .exceptions import InvalidFilenameTypeException
 from .exceptions import InvalidLoggingLevelTypeException
@@ -14,7 +13,7 @@ def get_log_level(handler_config) -> str:
         warnings.warn("'level' is not defined, using default logging level -> INFO", LoggerSetupWarning)
         return "INFO"  # default level
     elif not isinstance(level, str):
-        warnings.warn("'level' must be a string")
+        warnings.warn("'level' must be a string", LoggerSetupWarning)
         raise InvalidLoggingLevelTypeException()
     if str(level).islower():
         warnings.warn("'level' should be in uppercase", LoggerSetupWarning)
@@ -26,7 +25,7 @@ def get_log_type(handler_config) -> str:
     if log_type is None:
         raise LoggingTypeDoesNotDefinedException()
     elif not isinstance(log_type, str):
-        warnings.warn("'type' must be a string")
+        warnings.warn("'type' must be a string", LoggerSetupWarning)
         raise InvalidLoggingTypeTypeException()
     if str(log_type).isupper():
         log_type = str(log_type).lower()
@@ -43,7 +42,7 @@ def get_filename(handler_config) -> str:
         warnings.warn("'filename' is not defined, using default filename -> app.log", LoggerSetupWarning)
         return 'app.log'  # default filename
     elif not isinstance(filename, str):
-        warnings.warn("'filename' must be a string")
+        warnings.warn("'filename' must be a string", LoggerSetupWarning)
         raise InvalidFilenameTypeException()
     if str(filename).endswith('.log'):
         return filename

@@ -1,7 +1,6 @@
+from constant import flog
 from setup import docker
 from setup import kube
-from constant import flog
-
 
 if __name__ == '__main__':
     flog.log("start application")
