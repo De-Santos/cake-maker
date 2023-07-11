@@ -1,18 +1,3 @@
-class LoggingTypeDoesNotDefinedException(Exception):
-    def __init__(self, message: str = "Logging type must be defined") -> None:
-        super().__init__(message)
-
-
-class InvalidLoggingLevelTypeException(Exception):
-    def __init__(self, message: str = "Logging level must be string") -> None:
-        super().__init__(message)
-
-
-class InvalidLoggingTypeTypeException(Exception):
-    def __init__(self, message: str = "Logging type must be string") -> None:
-        super().__init__(message)
-
-
 class InvalidFilenameTypeException(Exception):
     def __init__(self, message: str = "Invalid filename type, filename type must be string") -> None:
         super().__init__(message)
@@ -50,4 +35,39 @@ class InvalidDateFormatTypeException(Exception):
 
 class InvalidLogLevelException(Exception):
     def __init__(self, message: str = "Invalid log level") -> None:
+        super().__init__(message)
+
+
+class InvalidHandlerTypeException(Exception):
+    def __init__(self, message: str = "'handlers' must be header, not an argument") -> None:
+        super().__init__(message)
+
+
+class InvalidConsoleLogLevelException(Exception):
+    def __init__(self, message: str = "Invalid 'handlers:console:level', unknown log level") -> None:
+        super().__init__(message)
+
+
+class InvalidConsoleLogLevelTypeException(Exception):
+    def __init__(self, message: str = "Invalid 'handlers:console:level' type, log level must be string") -> None:
+        super().__init__(message)
+
+
+class InvalidConsoleHandlerTypeException(Exception):
+    def __init__(self, message: str = "'handlers:console' must be header, not argument") -> None:
+        super().__init__(message)
+
+
+class InvalidFileHandlerTypeException(Exception):
+    def __init__(self, message: str = "'handlers:file' must be header, not argument") -> None:
+        super().__init__(message)
+
+
+class InvalidFileLogLevelTypeException(Exception):
+    def __init__(self, message: str = "Invalid 'handlers:file:level' type, log level must be string") -> None:
+        super().__init__(message)
+
+
+class InvalidFileLogLevelException(Exception):
+    def __init__(self, message: str = "Invalid 'handlers:file:level', unknown log level") -> None:
         super().__init__(message)

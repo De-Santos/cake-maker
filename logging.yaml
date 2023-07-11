@@ -1,19 +1,17 @@
-#log:
-#  format:
-#    message: "%(log_color)s%(levelname)s %(pathname)s %(message)s"
-#    date: "%Y-%m-%d %H:%M:%S"
-#  color:
-#    debug: green
-#    info: blue
-#    warning: yellow
-#    error: red
-#    critical: bold_red
+log:
+  format:
+    message: "%(log_color)s%(levelname)s %(pathname)s %(message)s"
+    date: "%Y-%m-%d %H:%M:%S"
+  color:
+    debug: green
+    info: blue
+    warning: yellow
+    error: red
+    critical: bold_red
 
 handlers:
-  - type: file
+  file:
     level: INFO
     filename: app.log
-    format: json
-  - type: console
+  console:
     level: DEBUG
-    format: json
