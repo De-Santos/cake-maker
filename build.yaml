@@ -1,5 +1,6 @@
-logging:
-  log_file: "app.log"
+project:
+    path: C:\CodeFile\JavaProjects\cheesecake-core
+    name: cheesecake-core
 
 modules:
   - module:
