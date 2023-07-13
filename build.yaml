@@ -1,11 +1,14 @@
 project:
-    path: C:\CodeFile\JavaProjects\cheesecake-core
-    name: cheesecake-core
+  path: C:\CodeFile\JavaProjects\cheesecake-core
+  name: cheesecake-core
 
 modules:
-  - module:
-      name: name
-      path: path
-      dockerfile_name: name
-      local_push_commands: path
-      cloud_push_commands: path
+  - name: user-service
+    path: .\user-service
+    dockerfile_path: C:\CodeFile\JavaProjects\cheesecake-core\user-service\docker\user-dockerfile
+    local_push_commands: [
+      "docker build -t localhost:5000/user-service -f user-dockerfile .",
+      "docker push localhost:5000/user-service"
+    ]
+    cloud_push_commands: Null
+
