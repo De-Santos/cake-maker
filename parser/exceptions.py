@@ -98,13 +98,21 @@ class ModuleDockerfileNotAFileException(Exception):
         super().__init__(f"Module dockerfile must be file by path: {path}")
 
 
-class ModulePushCommandsNotDefinedException(Exception):
-    def __init__(self, message: str = "'module:local_push_commands' must be defined") -> None:
+class ModuleCommandsNotDefinedException(Exception):
+    def __init__(self, message: str = "'module:commands' must be defined") -> None:
         super().__init__(message)
 
 
-class InvalidModulePushCommandsTypeException(Exception):
-    def __init__(self,
-                 message: str = "Invalid 'module:local_push_commands/cloud_push_commands' type, must be a list"
-                 ) -> None:
+class InvalidModuleCommandsTypeException(Exception):
+    def __init__(self, message: str = "Invalid 'module:commands' type, must be a list") -> None:
         super().__init__(message)
+
+
+class InvalidModuleCommandTypeException(Exception):
+    def __init__(self, message: str = "Invalid 'module:command:<generic>' type, must be a list or string") -> None:
+        super().__init__(message)
+
+
+class UnknownModuleException(Exception):
+    def __init__(self, name: str) -> None:
+        super().__init__(f"Unknown module: {name}")

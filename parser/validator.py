@@ -11,8 +11,6 @@ from .exceptions import (
     InvalidModuleTypeException,
     InvalidModuleNameTypeException,
     ModuleNameNotDefinedException,
-    ModulePushCommandsNotDefinedException,
-    InvalidModulePushCommandsTypeException,
     ModulePathNotDefinedException,
     InvalidModulePathTypeException,
     ProjectNotFoundException,
@@ -21,7 +19,12 @@ from .exceptions import (
     ModuleDockerfilePathNotDefinedException,
     InvalidModuleDockerfilePathTypeException,
     ModuleDockerfileNotFoundException,
-    ModuleDockerfileNotAFileException, ModulesNotDefinedException, ModuleNameDuplicateException
+    ModuleDockerfileNotAFileException,
+    ModulesNotDefinedException,
+    ModuleNameDuplicateException,
+    ModuleCommandsNotDefinedException,
+    InvalidModuleCommandsTypeException,
+    InvalidModuleCommandTypeException
 )
 
 
@@ -66,7 +69,8 @@ def _validate_module_path(module: dict, project_path: str):
         warnings.warn(f"Invalid 'module:path' type, 'path' must be a string, example: {example_modules_config}")
         raise InvalidModulePathTypeException()
     else:
-        path = os.path.join(project_path, path)
+        if not os.path.isabs(path):
+            path = os.path.join(project_path, path)
         if not os.path.exists(path):
             warnings.warn(f"Module not found by path: {path}")
             raise ModuleNotFoundException(path)
@@ -94,21 +98,21 @@ def _validate_dockerfile_path(module: dict):
             raise ModuleDockerfileNotAFileException(path)
 
 
-def _validate_module_push_commands(module: dict):
-    if module.get('local_push_commands') is None:
-        warnings.warn(f"'module:local_push_commands' not defined, example: {example_modules_config}")
-        raise ModulePushCommandsNotDefinedException()
-    elif not isinstance(module.get('local_push_commands'), list):
+def _validate_commands(module: dict):
+    if module.get('commands') is None:
+        warnings.warn(f"'module:commands' not defined, example: {example_modules_config}")
+        raise ModuleCommandsNotDefinedException()
+    elif not isinstance(module.get('commands'), dict):
         warnings.warn(
-            f"Invalid 'module:local_push_commands' type, 'local_push_commands' must be a list, \
+            f"Invalid 'module:commands' type, 'commands' must be a list or string, \
             example: {example_modules_config}")
-        raise InvalidModulePushCommandsTypeException()
-
-    if module.get('cloud_push_commands') and not isinstance(module.get('cloud_push_commands'), list):
-        warnings.warn(
-            f"Invalid 'module:cloud_push_commands' type, 'cloud_push_commands' must be a list, \
-            example: {example_modules_config}")
-        raise InvalidModulePushCommandsTypeException()
+        raise InvalidModuleCommandsTypeException()
+    for command in module.get('commands').values():
+        if not isinstance(command, str) and not isinstance(command, list):
+            warnings.warn(
+                f"Invalid 'module:commands' type, 'commands' must be a list or string, \
+                example: {example_modules_config}")
+            raise InvalidModuleCommandTypeException()
 
 
 def _validate_project_name(project: dict):
@@ -125,7 +129,7 @@ def validate_project(project: dict):
     _validate_project_name(project)
 
 
-def validate_modules(modules: list, project: dict):
+def validate_modules(modules: list, project: dict, expect_full_path: bool):
     if modules is None:
         warnings.warn(f"Modules must be defined, example: {example_modules_config}")
         raise ModulesNotDefinedException()
@@ -137,6 +141,9 @@ def validate_modules(modules: list, project: dict):
                 raise InvalidModuleTypeException()
             else:
                 _validate_module_name(module, module_names)
-                _validate_module_path(module, project.get('path'))
+                if expect_full_path:
+                    _validate_module_path(module, "")
+                else:
+                    _validate_module_path(module, project.get('path'))
                 _validate_dockerfile_path(module)
-                _validate_module_push_commands(module)
+                _validate_commands(module)

@@ -2,12 +2,14 @@ import os.path
 
 import yaml
 
+from entities import Module
 from utils.color_warnings import warnings
 from . import validator
 from .constants import example_project_not_config
 from .exceptions import (
     BuildConfigurationFileNotFoundException,
     InvalidProjectValue,
+    UnknownModuleException
 )
 
 
@@ -27,7 +29,7 @@ class BuildParser:
         except FileNotFoundError:
             raise BuildConfigurationFileNotFoundException(path)
 
-    def _parse_project(self, ) -> dict:
+    def _parse_project(self) -> dict:
         project: dict = self._config.get('project')
         if project is None:
             warnings.warn(f"Project not configured, better to configure it like: {example_project_not_config}")
@@ -50,9 +52,16 @@ class BuildParser:
 
     def _parse_modules(self) -> dict:
         modules: list[dict] = self._config.get('modules')
-        validator.validate_modules(modules, self._project)
+        validator.validate_modules(modules, self._project, self._expect_full_path)
         return {module.get('name'): module for module in modules}
 
-    def parse(self, module: str):
-        # TODO: this method will parse modules and return module by name
-        raise NotImplementedError()
+    def parse(self, module_name: str) -> Module:
+        module_config: dict = self._modules.get(module_name)
+        if module_config is None:
+            raise UnknownModuleException(module_name)
+        return Module(
+            name=module_config.get('name'),
+            path=module_config.get('path'),
+            dockerfile_path=module_config.get('dockerfile_path'),
+            commands=module_config.get('commands')
+        )
