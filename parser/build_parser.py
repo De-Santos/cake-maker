@@ -48,7 +48,7 @@ class BuildParser:
                 return dict()
             else:
                 warnings.warn(f"Invalid 'project' value: {project}")
-                raise InvalidProjectValue()
+                raise InvalidProjectValue(project)
 
     def _parse_modules(self) -> dict:
         modules: list[dict] = self._config.get('modules')
