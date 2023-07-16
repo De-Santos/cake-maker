@@ -1,6 +1,6 @@
 import os
 
-from setup import LoggerSetup
+from setup.logger.logger import LoggerSetup
 
 # Logger
 log_config_path = os.path.abspath("logging.yaml")  # Get absolute path to the logging configuration file
